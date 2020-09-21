@@ -88,7 +88,7 @@ public class Calculator : MonoBehaviour
 
         runes = runeManager.GetRuneList(Config.setNum-1);
         for(int i=0;i<runes.Count;++i){
-            int value = (int)(((int)(runes[i] * 1000 + 0.5f) - 26500) * 0.1f * factor + 0.5f);
+            int value = (int)(((int)(runes[i] * 1000 + 0.5f) - 26500) * 0.2f * factor + 0.5f);
             food.Add(new CalUnit(Config.setNum-1, i, value));
         }
 
@@ -129,7 +129,7 @@ public class Calculator : MonoBehaviour
     }
 
     void UpdateFoodInputField(){
-        string s = "";
+        string s = "\n";
         int pre = runeManager.currentRuneId;
         for(int i=0;i<food.Count;++i){
             if(ans[i]){
