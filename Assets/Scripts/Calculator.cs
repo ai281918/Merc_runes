@@ -44,6 +44,7 @@ public class Calculator : MonoBehaviour
     int ans_max;
     public Text resultSize;
     bool hasAns = false;
+    public TMP_Text foodText;
 
     private void Awake() {
         runeManager = RuneManager.instance;
@@ -123,24 +124,43 @@ public class Calculator : MonoBehaviour
         ans_max = runeSize;
         hasAns = false;
 
-        BT(0, runeSize);
+        int t = runeSize;
+        for(int i=0;i<food.Count;++i){
+            t += food[i].value;
+        }
+        if(t <= targetSize){
+            ans_max = t;
+            for(int i=0;i<food.Count;++i){
+                ans[i] = true;
+            }
+        }
+        else{
+            BT(0, runeSize);
+        }
+
 
         UpdateFoodInputField();
+        foodText.color = Color.black;
     }
 
     void UpdateFoodInputField(){
         string s = "\n";
         int pre = runeManager.currentRuneId;
+        int currentValue = runeSize;
         for(int i=0;i<food.Count;++i){
             if(ans[i]){
                 if(food[i].setId != pre){
                     s += "----------------\n";
                     pre = food[i].setId;
                 }
-                s += runeManager.GetRuneList(food[i].setId)[food[i].id].ToString() + "\n";
+                currentValue += food[i].value;
+                s += runeManager.GetRuneList(food[i].setId)[food[i].id].ToString("0.000");
+                s += " ---> ";
+                s += (currentValue / 1000f).ToString("0.000") + "\n";
             }
         }
-        resultSize.text = (ans_max / 1000f).ToString();
+        resultSize.text = (ans_max / 1000f).ToString("0.000");
+        resultSize.color = (ans_max == targetSize) ? Color.white : Color.red;
         resultInputField.SetTextWithoutNotify(s);
         resultInputField.ActivateInputField();
     }
@@ -155,5 +175,6 @@ public class Calculator : MonoBehaviour
         fileManager.SelectSet(runeManager.currentRuneId);
 
         food.Clear();
+        foodText.color = new Color(0.8f, 0.8f, 0.8f, 1f);
     }
 }

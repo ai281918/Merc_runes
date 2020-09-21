@@ -94,7 +94,7 @@ public class FileManager : MonoBehaviour
             List<float> runes = runeManager.GetRuneList(i);
             StreamWriter sw = new StreamWriter(fileName);
             for(int j=0;j<runes.Count;++j){
-                sw.WriteLine(runes[j].ToString());
+                sw.WriteLine(runes[j].ToString("0.000"));
             }
             sw.Close();
         }
@@ -109,7 +109,7 @@ public class FileManager : MonoBehaviour
         List<float> runes = runeManager.currentRuneList;
         string s = "";
         for(int i=0;i<runes.Count;++i){
-            s += runes[i] + "\n";
+            s += runes[i].ToString("0.000") + "\n";
         }
         inputField.SetTextWithoutNotify(s);
         inputField.ActivateInputField();
@@ -131,8 +131,15 @@ public class FileManager : MonoBehaviour
         runes.Clear();
         float v;
         for(int i=0;i<s.Length;++i){
-            if(Single.TryParse(s[i], out v) && v > 27f && v <= 35f){
-                runes.Add(v);
+            if(runeManager.currentRuneId == Config.setNum-1){
+                if(Single.TryParse(s[i], out v) && v >= 27f && v <= 35f){
+                    runes.Add(v);
+                }
+            }
+            else{
+                if(Single.TryParse(s[i], out v) && v > 27f && v <= 35f){
+                    runes.Add(v);
+                }
             }
         }
     }
